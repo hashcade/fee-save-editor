@@ -89,19 +89,58 @@ def push_tag(tag: str) -> None:
     print(f"Pushed {tag}. The release workflow will build and publish its downloads.")
 
 
+def check_unpublished_tag(tag: str) -> str:
+    repository = output("gh", "repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner")
+    result = subprocess.run(("gh", "api", f"repos/{repository}/releases/tags/{tag}"),
+                            cwd=ROOT, text=True, capture_output=True)
+    if result.returncode == 0:
+        raise ValueError(f"{tag} already has a release; publish a new version instead")
+    try:
+        missing = json.loads(result.stdout).get("status") == "404"
+    except (json.JSONDecodeError, AttributeError):
+        missing = False
+    if not missing:
+        raise ValueError("could not confirm that the release is unpublished")
+    reference = f"refs/tags/{tag}"
+    previous = output("git", "rev-parse", reference)
+    remote = output("git", "ls-remote", REMOTE, reference).split()
+    if remote != [previous, reference]:
+        raise ValueError("local and remote release tags do not match")
+    command("git", "merge-base", "--is-ancestor", f"{tag}^{{commit}}", "HEAD")
+    if output("git", "rev-parse", f"{tag}^{{commit}}") == output("git", "rev-parse", "HEAD"):
+        raise ValueError("tag already points to HEAD; rerun the existing workflow instead")
+    return previous
+
+
+def retry_unpublished_tag(tag: str, previous: str) -> None:
+    reference = f"refs/tags/{tag}"
+    command("git", "tag", "--force", "-a", tag, "-m", tag)
+    try:
+        command("git", "push", f"--force-with-lease={reference}:{previous}", REMOTE, reference)
+    except BaseException:
+        command("git", "update-ref", reference, previous)
+        raise
+    print(f"Updated unpublished {tag}. The release workflow will validate and publish its downloads.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bump", nargs="?", choices=("patch", "minor", "major"))
     parser.add_argument("--current", action="store_true", help="tag an already committed VERSION (migration only)")
+    parser.add_argument("--retry-unpublished", action="store_true", help="update a failed, unpublished tag to its fixed descendant")
     parser.add_argument("--check", action="store_true", help="validate and show the release plan without publishing")
     parser.add_argument("--yes", action="store_true", help="skip the confirmation prompt")
     args = parser.parse_args()
-    if args.current and args.bump:
-        parser.error("--current cannot be combined with a version bump")
+    if sum((bool(args.bump), args.current, args.retry_unpublished)) > 1:
+        parser.error("choose a version bump, --current or --retry-unpublished")
 
     check_repository()
     current = read_version()
-    if args.current:
+    if args.retry_unpublished:
+        tag = f"v{format_version(current)}"
+        previous = check_unpublished_tag(tag)
+        print(f"Ready to update unpublished {tag} to {output('git', 'rev-parse', '--short', 'HEAD')}")
+    elif args.current:
         tag = f"v{format_version(current)}"
         check_new_tag(tag)
         check_build(output("git", "rev-parse", "HEAD"))
@@ -124,7 +163,7 @@ def main() -> None:
         print("Release cancelled.")
         return
 
-    if not args.current:
+    if not args.current and not args.retry_unpublished:
         print("Full validation and publication will run in the release workflow.", flush=True)
         committed = False
         try:
@@ -141,7 +180,10 @@ def main() -> None:
                 VERSION_PATH.write_text(f"{format_version(current)}\n", encoding="utf-8")
             raise
 
-    push_tag(tag)
+    if args.retry_unpublished:
+        retry_unpublished_tag(tag, previous)
+    else:
+        push_tag(tag)
 
 
 if __name__ == "__main__":

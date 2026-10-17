@@ -325,3 +325,10 @@ release workflow is the publication gate: all four platforms must pass the full
 GUI/CLI tests and extracted-package checks before a public Release is created.
 It also generates release notes and uploads the downloads. Do not create tags or
 upload release files manually.
+
+If a release fails before a GitHub Release exists, commit and push the fix, then
+run `python3 scripts/release.py --retry-unpublished`. It requires the existing
+tag to be an ancestor of the current commit, rejects existing Releases (including
+drafts), and updates only that tag using an exact remote-tag lease. It does not
+change `VERSION` or repeat local regression. The release workflow remains the
+full publication gate. Published versions must receive a new version number.
