@@ -79,6 +79,9 @@ jobs:
       - name: Build CLI
         run: dotnet build cli/Cli.csproj -c Release --nologo
 
+      - name: Verify release script
+        run: python scripts/test_release_script.py
+
       - name: Verify save editing
         run: python scripts/test_cli.py --cli cli/bin/Release/net10.0/${{ matrix.executable }}
 
