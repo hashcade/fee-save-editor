@@ -69,7 +69,7 @@ public partial class MainWindow : Window
             LoadQuantityItems();
             LoadAnimals();
             LoadRoster();
-            LoadProtagonistName();
+            LoadProtagonistSettings();
             LoadEmblems();
             LoadSupports();
             LoadVariables();
@@ -132,7 +132,7 @@ public partial class MainWindow : Window
     private void RefreshGameplayValues()
     {
         LoadMainValues(); LoadActivities(); LoadDonations(); LoadMinigames(); LoadAchievements();
-        LoadInventory(); LoadQuantityItems(); LoadAnimals(); LoadRoster(); LoadProtagonistName(); LoadEmblems(); LoadSupports();
+        LoadInventory(); LoadQuantityItems(); LoadAnimals(); LoadRoster(); LoadProtagonistSettings(); LoadEmblems(); LoadSupports();
     }
 
     private void RefreshOverview()

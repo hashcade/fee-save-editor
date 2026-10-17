@@ -15,6 +15,12 @@ AppBuilder.Configure<App>().UseSkia().WithInterFont()
 var window = new MainWindow();
 window.Show();
 Dispatcher.UIThread.RunJobs();
+if (args is ["--gender-tests", var genderSave, var genderScreenshot])
+{
+    GenderTests.Run(window, genderSave, genderScreenshot);
+    window.Close();
+    return;
+}
 if (args is ["--animal-ticket-tests", .. var animalTicketOptions])
 {
     AnimalTicketTests.Run(window, animalTicketOptions);

@@ -1,4 +1,7 @@
 {
+  "Gender": "Gender",
+  "Male": "Male",
+  "Female": "Female",
   "Animals": "Animals",
   "MaxAllAnimals": "Max All Animals",
   "MaxAmount": "Max Amount",

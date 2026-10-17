@@ -87,6 +87,10 @@
                   <TextBox Name="PlayerNameInput" Height="42" MaxLength="2048" IsEnabled="False" />
                 </StackPanel>
                 <StackPanel Spacing="8">
+                  <TextBlock Text="{DynamicResource Gender}" />
+                  <ComboBox Name="PlayerGenderInput" Height="42" Margin="0" HorizontalAlignment="Stretch" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Spacing="8">
                   <TextBlock Text="{DynamicResource Difficulty}" />
                   <ComboBox Name="DifficultyInput" Height="42" Margin="0" HorizontalAlignment="Stretch" />
                 </StackPanel>

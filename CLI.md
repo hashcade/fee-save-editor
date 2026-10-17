@@ -19,6 +19,8 @@ accept `--language <code>` where shown by `--help`. Supported codes are `en`,
 FeeEditor.Cli main show Manual0 --json
 FeeEditor.Cli main name Manual0
 FeeEditor.Cli main name-set Manual0 Manual0-edited --name Alear
+FeeEditor.Cli main gender Manual0
+FeeEditor.Cli main gender-set Manual0 Manual0-edited --gender male
 FeeEditor.Cli main activities Manual0 --json
 FeeEditor.Cli main activities-set Manual0 Manual0-edited --training-remaining 1 --arena-remaining 3
 FeeEditor.Cli main activities-restore Manual0 Manual0-edited
@@ -35,6 +37,8 @@ FeeEditor.Cli main donations-max Manual0 Manual0-edited --all
 ```
 
 Money and bond fragments accept 0–9,999,999; each ingot type accepts 0–9,999.
+Gender edits change only Alear's saved customization gender. Stats, current class,
+skills, equipment, supports and Pact partner remain unchanged; no cleanup is performed.
 Play time uses `HH:MM:SS`, up to `999:59:59.5`; fractional seconds are optional.
 `main show` includes `PlayTime` and `PlayTimeSeconds` when a supported TIME section
 is present. Editing updates both the actual timer and the save-slot summary.

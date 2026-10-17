@@ -30,6 +30,8 @@ if (args.Length == 0 || args is ["--help"])
           FeeEditor.Cli main set <save> <new-file> [options]
           FeeEditor.Cli main name <save>
           FeeEditor.Cli main name-set <save> <new-file> --name <name>
+          FeeEditor.Cli main gender <save>
+          FeeEditor.Cli main gender-set <save> <new-file> --gender male|female
           FeeEditor.Cli main activities <save> [--json]
           FeeEditor.Cli main activities-set <save> <new-file> [--training-remaining <0-1>] [--arena-remaining <0-3>]
           FeeEditor.Cli main activities-restore <save> <new-file>
@@ -173,6 +175,19 @@ try
             return 0;
         case ["main", "name-set", var source, var destination, "--name", var name]:
             EngageSave.Load(source).WithProtagonistName(name).WriteCopy(destination);
+            Console.WriteLine(Path.GetFullPath(destination));
+            return 0;
+        case ["main", "gender", var source]:
+            Console.WriteLine(JsonSerializer.Serialize(new { Gender = EngageSave.Load(source).ReadProtagonistGender()?.ToString().ToLowerInvariant() }));
+            return 0;
+        case ["main", "gender-set", var source, var destination, "--gender", var gender]:
+            var selectedGender = gender.ToLowerInvariant() switch
+            {
+                "male" => ProtagonistGender.Male,
+                "female" => ProtagonistGender.Female,
+                _ => throw new ArgumentException("Gender must be male or female.")
+            };
+            EngageSave.Load(source).WithProtagonistGender(selectedGender).WriteCopy(destination);
             Console.WriteLine(Path.GetFullPath(destination));
             return 0;
         case ["main", "set", var source, var destination, .. var options]:

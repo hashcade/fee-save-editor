@@ -1,4 +1,7 @@
 {
+  "Gender": "Genre",
+  "Male": "Masculin",
+  "Female": "Féminin",
   "Animals": "Animaux",
   "MaxAllAnimals": "Maximiser tous les animaux",
   "MaxAmount": "Quantité maximale",

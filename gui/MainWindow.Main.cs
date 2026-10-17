@@ -9,19 +9,27 @@ public partial class MainWindow
 {
     public bool CanEditMain { get; private set; }
     private bool _canEditProtagonistName;
+    private bool _canEditProtagonistGender;
     public bool CanEditPlayTime { get; private set; }
     private float _loadedPlayTimeSeconds;
 
-    private void LoadProtagonistName()
+    private void LoadProtagonistSettings()
     {
         _canEditProtagonistName = PlayerNameInput.IsEnabled = false;
         PlayerNameInput.Clear();
+        _canEditProtagonistGender = PlayerGenderInput.IsEnabled = false;
+        PlayerGenderInput.SelectedIndex = -1;
         if (Save is null || !CanEditMain || !Save.Sections.Any(section => section.Name == "UNIT")) return;
         try
         {
             if (Save.ReadProtagonistName() is not { } name) return;
             PlayerNameInput.Text = name;
             _canEditProtagonistName = PlayerNameInput.IsEnabled = true;
+            if (Save.ReadProtagonistGender() is { } gender)
+            {
+                PlayerGenderInput.SelectedIndex = (int)gender - 1;
+                _canEditProtagonistGender = PlayerGenderInput.IsEnabled = true;
+            }
         }
         catch (Exception error) when (IsFileError(error)) { ShowMessage("MainUnavailable", error.Message); }
     }
@@ -43,6 +51,8 @@ public partial class MainWindow
             if (CanEditMinigames) edited = edited.WithMinigameRecords(ReadMinigameInputs());
             if (CanEditActivities) edited = edited.WithSomnielActivities(ReadActivityInputs());
             if (_canEditProtagonistName) edited = edited.WithProtagonistName(PlayerNameInput.Text ?? "");
+            if (_canEditProtagonistGender)
+                edited = edited.WithProtagonistGender((ProtagonistGender)(PlayerGenderInput.SelectedIndex + 1));
             Save = edited;
             if (CanEditPlayTime) _loadedPlayTimeSeconds = edited.ReadPlayTimeSeconds();
             if (CanEditRoster) RefreshRoster(selectEditor: false, preserveSelection: true);
@@ -137,10 +147,13 @@ public partial class MainWindow
     {
         int difficulty = DifficultyInput.SelectedIndex;
         int mode = ModeInput.SelectedIndex;
+        int gender = PlayerGenderInput.SelectedIndex;
         DifficultyInput.ItemsSource = new[] { "Normal", "Hard", "Maddening" }.Select(UiLanguage.Get).ToArray();
         ModeInput.ItemsSource = new[] { "Casual", "Classic" }.Select(UiLanguage.Get).ToArray();
+        PlayerGenderInput.ItemsSource = new[] { "Male", "Female" }.Select(UiLanguage.Get).ToArray();
         DifficultyInput.SelectedIndex = difficulty;
         ModeInput.SelectedIndex = mode;
+        PlayerGenderInput.SelectedIndex = gender;
     }
 
     private void ShowPage(bool inspector)

@@ -1,4 +1,7 @@
 {
+  "Gender": "性别",
+  "Male": "男",
+  "Female": "女",
   "Animals": "动物",
   "MaxAllAnimals": "全部动物补满",
   "MaxAmount": "数量补满",
