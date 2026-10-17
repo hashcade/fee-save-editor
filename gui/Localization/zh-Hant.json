@@ -1,4 +1,9 @@
 {
+  "Animals": "動物",
+  "MaxAllAnimals": "全部動物補滿",
+  "MaxAmount": "數量補滿",
+  "RelayTickets": "續戰票",
+  "Campaign": "存檔識別碼",
   "PlayTime": "遊玩時長",
   "Hours": "時",
   "Minutes": "分",

@@ -18,6 +18,12 @@ if (args.Length == 0 || args is ["--help"])
         Usage:
           FeeEditor.Cli inspect <save> [--json]
           FeeEditor.Cli copy <save> <new-file>
+          FeeEditor.Cli animals list <save> [--json] [--language <code>]
+          FeeEditor.Cli animals set <save> <new-file> --animal <id> --amount <0-99>
+          FeeEditor.Cli animals max <save> <new-file> --all|--animal <id>
+          FeeEditor.Cli tickets list <Global> [--json]
+          FeeEditor.Cli tickets set <Global> <new-file> --identifier <hex> --amount <0-999>
+          FeeEditor.Cli tickets max <Global> <new-file> --identifier <hex>
           FeeEditor.Cli variables list <save> [--json]
           FeeEditor.Cli variables set <save> <new-file> --key <key> --value <signed-int32>
           FeeEditor.Cli main show <save> [--json]
@@ -112,6 +118,10 @@ try
 {
     switch (args)
     {
+        case ["animals", .. var animalOptions]:
+            return AnimalsCommand.Run(animalOptions);
+        case ["tickets", .. var ticketOptions]:
+            return TicketsCommand.Run(ticketOptions);
         case ["main", var activityVerb, ..] when activityVerb is "activities" or "activities-set" or "activities-restore":
             return ActivitiesCommand.Run(args[1..]);
         case ["main", var minigameVerb, ..] when minigameVerb is "minigames" or "minigame-set":

@@ -130,7 +130,7 @@ internal static class AdvancedEditingTests
         string source = Path.Combine(temporary, "variables-source");
         File.WriteAllBytes(source, save.Serialize());
         Check(window.LoadSave(source) && window.CanEditVariables, "The variables GUI could not load.");
-        window.FindControl<TabStrip>("MainNavigation")!.SelectedIndex = 7;
+        window.FindControl<TabStrip>("MainNavigation")!.SelectedIndex = 8;
         window.FindControl<TabStrip>("InspectorPages")!.SelectedIndex = 1;
         window.FindControl<ListBox>("VariableList")!.SelectedItem = key;
         window.FindControl<NumericUpDown>("VariableValueInput")!.Text = "-2147483648";
@@ -151,7 +151,7 @@ internal static class AdvancedEditingTests
         window.FindControl<NumericUpDown>("IronIngotsInput")!.Text = "9";
         Check(window.ApplyMainValues(), "The resource editor did not apply.");
         window.FindControl<TabStrip>("MainNavigation")!.SelectedIndex = 0;
-        window.FindControl<TabStrip>("MainNavigation")!.SelectedIndex = 7;
+        window.FindControl<TabStrip>("MainNavigation")!.SelectedIndex = 8;
         Check(window.FindControl<NumericUpDown>("VariableValueInput")!.Value == 9, "Returning to Variables displayed stale resource values.");
         File.WriteAllBytes(source, SafeFixture().Serialize());
         Check(window.LoadSave(source), "The transactional variable fixture did not load.");

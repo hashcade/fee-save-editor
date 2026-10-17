@@ -1,4 +1,9 @@
 {
+  "Animals": "Animales",
+  "MaxAllAnimals": "Maximizar todos los animales",
+  "MaxAmount": "Cantidad máxima",
+  "RelayTickets": "Boletos de relevo",
+  "Campaign": "Identificador de partida",
   "PlayTime": "Tiempo de juego",
   "Hours": "Horas",
   "Minutes": "Minutos",

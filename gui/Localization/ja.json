@@ -1,4 +1,9 @@
 {
+  "Animals": "動物",
+  "MaxAllAnimals": "すべての動物を最大数に",
+  "MaxAmount": "最大数にする",
+  "RelayTickets": "繋戦のチケット",
+  "Campaign": "セーブ識別子",
   "PlayTime": "プレイ時間",
   "Hours": "時",
   "Minutes": "分",

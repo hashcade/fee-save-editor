@@ -67,6 +67,7 @@ public partial class MainWindow : Window
             LoadAchievements();
             LoadInventory();
             LoadQuantityItems();
+            LoadAnimals();
             LoadRoster();
             LoadProtagonistName();
             LoadEmblems();
@@ -107,6 +108,7 @@ public partial class MainWindow : Window
         RefreshInventoryLanguage();
         RefreshQuantityItemLanguage();
         RefreshDonationLanguage();
+        RefreshAnimals(selectEditor: false);
         RefreshMinigameLanguage();
         RefreshAchievementLanguage();
         RefreshRosterLanguage();
@@ -121,6 +123,8 @@ public partial class MainWindow : Window
         (!CanEditMain || ApplyMainValues())
         && (!HasPendingItemValues() || ApplyItemValues())
         && (!HasPendingQuantityItemValues() || ApplyQuantityItemValues())
+        && (!HasPendingAnimal() || ApplyAnimalValues())
+        && (!HasPendingTickets() || ApplyTicketValues())
         && (!CanEditRoster || ApplyPendingRoster())
         && (!HasPendingEmblemValues() || ApplyEmblemValues())
         && (!HasPendingSupportValues() || ApplySupportValues());
@@ -128,7 +132,7 @@ public partial class MainWindow : Window
     private void RefreshGameplayValues()
     {
         LoadMainValues(); LoadActivities(); LoadDonations(); LoadMinigames(); LoadAchievements();
-        LoadInventory(); LoadQuantityItems(); LoadRoster(); LoadProtagonistName(); LoadEmblems(); LoadSupports();
+        LoadInventory(); LoadQuantityItems(); LoadAnimals(); LoadRoster(); LoadProtagonistName(); LoadEmblems(); LoadSupports();
     }
 
     private void RefreshOverview()
@@ -231,8 +235,9 @@ public partial class MainWindow : Window
     private void Navigation_Changed(object? sender, SelectionChangedEventArgs e)
     {
         if (MainPanel is null || ItemsPanel is null || RosterPanel is null || EmblemsPanel is null
-            || EmblemPagesPanel is null || BondRingsPanel is null || SupportsPanel is null || AchievementsPanel is null || MinigamesPanel is null || InspectorPanel is null)
+            || EmblemPagesPanel is null || BondRingsPanel is null || SupportsPanel is null || AchievementsPanel is null || MinigamesPanel is null || InspectorPanel is null || AnimalsPanel is null)
             return;
+        if (MainNavigation.SelectedIndex != 7) AnimalsPanel.IsVisible = false;
         switch (MainNavigation.SelectedIndex)
         {
             case 0 when !MainPanel.IsVisible:
@@ -256,7 +261,10 @@ public partial class MainWindow : Window
             case 6 when !AchievementsPanel.IsVisible:
                 ShowAchievements();
                 break;
-            case 7 when !InspectorPanel.IsVisible:
+            case 7 when !AnimalsPanel.IsVisible:
+                ShowAnimals();
+                break;
+            case 8 when !InspectorPanel.IsVisible:
                 ShowPage(inspector: true);
                 break;
         }

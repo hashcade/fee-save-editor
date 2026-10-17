@@ -4,6 +4,7 @@
     <RootNamespace>FeeEditor.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Data/animals.json" LogicalName="FeeEditor.Core.Data.animals.json" />
     <EmbeddedResource Include="Data/items.json" LogicalName="FeeEditor.Core.Data.items.json" />
     <EmbeddedResource Include="Data/quantity-items.json" LogicalName="FeeEditor.Core.Data.quantity-items.json" />
     <EmbeddedResource Include="Data/roster.json" LogicalName="FeeEditor.Core.Data.roster.json" />

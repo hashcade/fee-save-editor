@@ -1,4 +1,9 @@
 {
+  "Animals": "동물",
+  "MaxAllAnimals": "모든 동물 수 최대",
+  "MaxAmount": "수량 최대",
+  "RelayTickets": "연전 티켓",
+  "Campaign": "세이브 식별자",
   "PlayTime": "플레이 시간",
   "Hours": "시간",
   "Minutes": "분",

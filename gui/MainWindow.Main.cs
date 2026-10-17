@@ -73,6 +73,8 @@ public partial class MainWindow
 
     private void LoadMainValues()
     {
+        LoadTickets();
+        GameMainLeft.IsVisible = GameMainRight.IsVisible = Save?.Kind != SaveKind.Global;
         CanEditMain = false;
         CanEditPlayTime = PlayTimeInputs.IsEnabled = false;
         PlayTimeHoursInput.Value = PlayTimeMinutesInput.Value = PlayTimeSecondsInput.Value = null;
@@ -85,6 +87,11 @@ public partial class MainWindow
             input.Value = null;
         if (Save is null)
             return;
+        if (Save.Kind == SaveKind.Global)
+        {
+            ShowPage(inspector: !CanEditTickets);
+            return;
+        }
         try
         {
             var values = Save.ReadMainValues();
@@ -138,6 +145,7 @@ public partial class MainWindow
 
     private void ShowPage(bool inspector)
     {
+        AnimalsPanel.IsVisible = false;
         MinigamesPanel.IsVisible = false;
         MainPanel.IsVisible = !inspector;
         ItemsPanel.IsVisible = false;
@@ -148,7 +156,7 @@ public partial class MainWindow
         SupportsPanel.IsVisible = false;
         AchievementsPanel.IsVisible = false;
         InspectorPanel.IsVisible = inspector;
-        MainNavigation.SelectedIndex = inspector ? 7 : 0;
+        MainNavigation.SelectedIndex = inspector ? 8 : 0;
         if (inspector && CanEditVariables && !HasPendingVariable()) RefreshVariables();
         RefreshPageLayout();
     }

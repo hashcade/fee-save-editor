@@ -39,7 +39,7 @@ internal static class ReviewScreenshots
             ("main", "zh-Hans", () => window.FindControl<Avalonia.Controls.Primitives.TabStrip>("MainNavigation")!.SelectedIndex = 0),
             ("variables", "en", () =>
             {
-                window.FindControl<Avalonia.Controls.Primitives.TabStrip>("MainNavigation")!.SelectedIndex = 7;
+                window.FindControl<Avalonia.Controls.Primitives.TabStrip>("MainNavigation")!.SelectedIndex = 8;
                 window.FindControl<Avalonia.Controls.Primitives.TabStrip>("InspectorPages")!.SelectedIndex = 1;
             })
         })

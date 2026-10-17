@@ -287,6 +287,27 @@ FeeEditor.Cli --version
 
 Both game saves and `Global` saves support inspection and lossless copies.
 
+## Animals and Relay Tickets
+
+```sh
+FeeEditor.Cli animals list Manual0 --language zh-Hans --json
+FeeEditor.Cli animals set Manual0 Manual0-edited --animal EleosDog --amount 99
+FeeEditor.Cli animals max Manual0 Manual0-edited --all
+FeeEditor.Cli animals max Manual0 Manual0-edited --animal EleosDog
+FeeEditor.Cli tickets list Global --json
+FeeEditor.Cli tickets set Global Global-edited --identifier 0000000000000001 --amount 999
+FeeEditor.Cli tickets max Global Global-edited --identifier 0000000000000001
+```
+
+Animals accept 0–99 per species. Bulk maximum includes all 24 adoptable species,
+including species not yet owned, without changing which animals are grazing.
+Relay Tickets accept 0–999 and are stored in `Global`, not `Manual0` or `Auto`.
+Use the hexadecimal identifier returned by `tickets list` to choose the campaign.
+Only an existing campaign record can be edited; no online unlock or campaign
+record is fabricated. Ticket timestamps, daily counters and other campaigns are
+preserved. All edit commands create a new output file rather than overwriting
+an existing file.
+
 ## Development and release
 
 ```sh

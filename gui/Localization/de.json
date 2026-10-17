@@ -1,4 +1,9 @@
 {
+  "Animals": "Tiere",
+  "MaxAllAnimals": "Alle Tierbestände maximieren",
+  "MaxAmount": "Maximale Anzahl",
+  "RelayTickets": "Stafettentickets",
+  "Campaign": "Spielstandkennung",
   "PlayTime": "Spielzeit",
   "Hours": "Stunden",
   "Minutes": "Minuten",

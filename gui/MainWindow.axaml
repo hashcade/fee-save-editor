@@ -70,13 +70,14 @@
           <TabStripItem Content="{DynamicResource Support}" />
           <TabStripItem Content="{DynamicResource Minigames}" />
           <TabStripItem Content="{DynamicResource Achievements}" />
+          <TabStripItem Content="{DynamicResource Animals}" />
           <TabStripItem Content="{DynamicResource Inspector}" />
         </TabStrip>
       </ScrollViewer>
     </Grid>
     <ScrollViewer Name="MainScroll" Grid.Row="1" Margin="24,0" IsVisible="{Binding IsVisible, ElementName=MainPanel}" HorizontalScrollBarVisibility="Disabled">
       <Grid Name="MainPanel" ColumnDefinitions="*,*" ColumnSpacing="24" VerticalAlignment="Top">
-        <StackPanel Spacing="24">
+        <StackPanel Name="GameMainLeft" Spacing="24">
           <suki:GlassCard Name="SettingsCard" Padding="20">
             <StackPanel Spacing="12" HorizontalAlignment="Stretch">
               <TextBlock Text="{DynamicResource GameSettings}" FontWeight="SemiBold" />
@@ -156,7 +157,7 @@
             </StackPanel>
           </suki:GlassCard>
         </StackPanel>
-        <StackPanel Grid.Column="1" Spacing="24">
+        <StackPanel Name="GameMainRight" Grid.Column="1" Spacing="24">
           <suki:GlassCard Name="DonationsCard" Padding="20">
             <StackPanel Spacing="12">
               <TextBlock Text="{DynamicResource Donations}" FontWeight="SemiBold" />
@@ -165,8 +166,45 @@
             </StackPanel>
           </suki:GlassCard>
         </StackPanel>
+        <suki:GlassCard Name="RelayTicketsCard" Padding="20" IsVisible="False">
+          <StackPanel Spacing="16">
+            <TextBlock Text="{DynamicResource RelayTickets}" FontWeight="SemiBold" />
+            <StackPanel Spacing="8">
+              <TextBlock Text="{DynamicResource Campaign}" />
+              <ComboBox Name="TicketCampaignInput" HorizontalAlignment="Stretch" Height="42" Margin="0" SelectionChanged="TicketCampaign_Changed" />
+            </StackPanel>
+            <StackPanel Name="TicketForm" IsEnabled="False" Spacing="12">
+              <TextBlock Text="{DynamicResource Amount}" />
+              <NumericUpDown Name="TicketAmountInput" Minimum="0" Maximum="999" FormatString="0" Height="42" />
+              <Button Content="{DynamicResource ApplyChanges}" HorizontalAlignment="Stretch" Click="ApplyTickets_Click" />
+              <Button Content="{DynamicResource MaxAmount}" HorizontalAlignment="Stretch" Click="MaxTickets_Click" />
+            </StackPanel>
+          </StackPanel>
+        </suki:GlassCard>
       </Grid>
     </ScrollViewer>
+    <Grid Name="AnimalsPanel" Grid.Row="1" Margin="24,0" IsVisible="False" ColumnDefinitions="320,*" ColumnSpacing="24">
+      <suki:GlassCard Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+          <TextBlock Text="{DynamicResource Animals}" FontWeight="SemiBold" />
+          <TextBox Name="AnimalSearch" Grid.Row="1" PlaceholderText="{DynamicResource Search}" TextChanged="AnimalSearch_Changed" />
+          <ListBox Name="AnimalList" Grid.Row="2" SelectionChanged="AnimalList_Changed">
+            <ListBox.ItemTemplate><DataTemplate DataType="x:Object" x:CompileBindings="False"><TextBlock Text="{Binding Label}" TextWrapping="Wrap" /></DataTemplate></ListBox.ItemTemplate>
+          </ListBox>
+          <Button Name="MaxAllAnimalsButton" Grid.Row="3" Content="{DynamicResource MaxAllAnimals}" HorizontalAlignment="Stretch" IsEnabled="False" Click="MaxAllAnimals_Click" />
+        </Grid>
+      </suki:GlassCard>
+      <suki:GlassCard Grid.Column="1" Padding="20">
+        <ScrollViewer>
+          <StackPanel Name="AnimalForm" IsEnabled="False" Spacing="16" MaxWidth="480" HorizontalAlignment="Left">
+            <TextBlock Text="{DynamicResource Amount}" />
+            <NumericUpDown Name="AnimalAmountInput" Minimum="0" Maximum="99" FormatString="0" Height="42" MinWidth="300" />
+            <Button Content="{DynamicResource ApplyChanges}" HorizontalAlignment="Stretch" Click="ApplyAnimal_Click" />
+            <Button Content="{DynamicResource MaxAmount}" HorizontalAlignment="Stretch" Click="MaxAnimal_Click" />
+          </StackPanel>
+        </ScrollViewer>
+      </suki:GlassCard>
+    </Grid>
     <ScrollViewer Name="MinigamesScroll" Grid.Row="1" Margin="24,0" IsVisible="{Binding IsVisible, ElementName=MinigamesPanel}" HorizontalScrollBarVisibility="Disabled">
       <Grid Name="MinigamesPanel" IsVisible="False" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="24" RowSpacing="24" VerticalAlignment="Top">
         <StackPanel Name="MinigameLeftCards" Spacing="24" />

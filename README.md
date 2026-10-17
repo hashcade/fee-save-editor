@@ -6,6 +6,8 @@ Edit Fire Emblem Engage saves, including DLC characters, Emblems and Bond Rings.
 
 ## Features
 
+- **Animals:** Browse all 24 adoptable species with localized names. Edit one species' owned count, maximize it to 99, or maximize every species together. Current grazing selections are preserved.
+- **Relay Tickets:** Open `Global` to edit the ticket count for a registered campaign, up to 999. Campaigns stay separate; daily counters, timestamps and online progress are preserved.
 - **Main:** Separate cards for game settings, resources, Somniel activities and donations. Edit the protagonist's name, play time in hours/minutes/seconds, money, bond fragments, iron/steel/silver ingots, difficulty, game mode and Sommie's name. Edit or restore remaining strength-training and standard Arena uses without changing scores. All four countries are shown together in the Donations card, with linked level and donated amount fields and one button to maximize all countries.
 - **Minigames:** Separate cards for push-ups, sit-ups, squats, wyvern riding and fishing, with all records directly visible. Edit training high scores for every difficulty, wyvern scores and saved evaluations, and each fish's catch count, best size and size rank. Cards grow with their contents; only the whole page scrolls.
 - **Items:** Switch directly between Convoy, Reclass Items, Materials, Ingredients, Gifts and Key Items tabs. Search the convoy, add, replace or delete items, edit remaining uses and weapon refinement, and restore uses to each item's normal maximum. Assign or clear any of the 20 base-game/DLC Emblem engravings and preview their effects. Assigning an engraving transfers it from its previous weapon, including weapons held by a character. Browse 105 quantity-based items, including Master/Second Seals, DLC Mystic Satchels and Mage Cannons, ingredients, gifts, crystals and key items. Edit their saved counts within the game's limits, or fill all reclass items, materials, ingredients or gifts to their individual maximums. Ingot counts stay linked to Main.
@@ -27,7 +29,7 @@ With the .NET 10 SDK installed, run:
 dotnet run --project gui/FeeEditor.Gui.csproj -c Release
 ```
 
-Open a `Manual0` or `Auto` save, make your edits, then save a copy to another folder. Keep the original until you have checked the edited copy in-game. `Global` saves can be inspected and copied but do not expose gameplay panels.
+Open a `Manual0` or `Auto` save, make your edits, then save a copy to another folder. Keep the original until you have checked the edited copy in-game. Open `Global` separately for Relay Tickets; editing a game save does not silently change its companion `Global` file.
 
 For scripted edits, see the [CLI guide](CLI.md).
 

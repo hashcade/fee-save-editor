@@ -15,6 +15,12 @@ AppBuilder.Configure<App>().UseSkia().WithInterFont()
 var window = new MainWindow();
 window.Show();
 Dispatcher.UIThread.RunJobs();
+if (args is ["--animal-ticket-tests", .. var animalTicketOptions])
+{
+    AnimalTicketTests.Run(window, animalTicketOptions);
+    window.Close();
+    return;
+}
 if (args is ["--main-screenshot", var mainSave, var mainScreenshot])
 {
     ReviewScreenshots.RunMain(window, mainSave, mainScreenshot);
@@ -137,6 +143,7 @@ try
     DonationGuiTests.Run(window, temporary);
     InventoryTests.Run(window, temporary);
     QuantityItemTests.Run();
+    AnimalTicketTests.Run(window, []);
     QuantityItemGuiTests.Run(window, temporary);
     RosterTests.Run(window, temporary);
     RosterClassTests.Run(window, temporary);

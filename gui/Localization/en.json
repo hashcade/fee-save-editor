@@ -1,4 +1,9 @@
 {
+  "Animals": "Animals",
+  "MaxAllAnimals": "Max All Animals",
+  "MaxAmount": "Max Amount",
+  "RelayTickets": "Relay Tickets",
+  "Campaign": "Campaign",
   "PlayTime": "Play Time",
   "Hours": "Hours",
   "Minutes": "Minutes",
