@@ -81,6 +81,7 @@ internal static class AnimalTicketTests
             foreach (string code in LanguageCatalog.Codes)
             {
                 window.SetLanguage(code);
+                LanguageTests.CheckNavigation(window);
                 Check(UiLanguage.Read(code).Keys.Order().SequenceEqual(UiLanguage.Read("en").Keys.Order()), "Language keys differ.");
             }
             window.SetLanguage("en");

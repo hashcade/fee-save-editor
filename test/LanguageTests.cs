@@ -21,6 +21,7 @@ internal static class LanguageTests
             .Concat(RosterCatalog.Skills.Select(row => row.Names))
             .Concat(ItemCatalog.Items.Select(row => row.Names))
             .Concat(QuantityItemCatalog.Items.Select(row => row.Names))
+            .Concat(AnimalCatalog.Animals.Select(row => row.Names))
             .Concat(EmblemCatalog.Emblems.Select(row => row.Names))
             .Concat(EmblemCatalog.Rings.Select(row => row.Names))
             .Concat(DonationCatalog.Countries.Select(row => (IReadOnlyDictionary<string, string>)row.Names))
@@ -109,10 +110,7 @@ internal static class LanguageTests
         {
             window.SetLanguage(language);
             Dispatcher.UIThread.RunJobs();
-            var navigation = window.FindControl<TabStrip>("MainNavigation")!;
-            string[] keys = ["Main", "Items", "Roster", "Emblems", "Support", "Minigames", "Achievements", "Inspector"];
-            Check(navigation.Items.Cast<TabStripItem>().Select(item => item.Content as string).SequenceEqual(keys.Select(UiLanguage.Get)),
-                "Top-level tabs retain text from a previous language.");
+            CheckNavigation(window);
             Check(window.FindControl<TabStrip>("ItemPages")!.Items.Cast<TabStripItem>().Select(item => item.Content as string)
                 .SequenceEqual(new[] { "Convoy", "ReclassItems", "Materials", "Ingredients", "Gifts", "KeyItems" }.Select(UiLanguage.Get)),
                 "Item category tabs retain text from a previous language.");
@@ -126,6 +124,13 @@ internal static class LanguageTests
 
     private static IEnumerable<string> Placeholders(string value) => Regex.Matches(value, @"\{[^{}]+\}")
         .Select(match => match.Value).Order();
+    public static void CheckNavigation(MainWindow window)
+    {
+        var navigation = window.FindControl<TabStrip>("MainNavigation")!;
+        string[] keys = ["Main", "Items", "Roster", "Emblems", "Support", "Minigames", "Achievements", "Animals", "Inspector"];
+        Check(navigation.Items.Cast<TabStripItem>().Select(item => item.Content as string).SequenceEqual(keys.Select(UiLanguage.Get)),
+            "Top-level tabs retain text from a previous language.");
+    }
     private static void Check(bool condition, string message)
     { if (!condition) throw new InvalidOperationException(message); }
 }
