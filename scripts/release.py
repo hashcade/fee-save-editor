@@ -125,8 +125,7 @@ def main() -> None:
         return
 
     if not args.current:
-        print("Checking GitHub CI for the current commit...", flush=True)
-        check_build(output("git", "rev-parse", "HEAD"))
+        print("Full validation and publication will run in the release workflow.", flush=True)
         committed = False
         try:
             VERSION_PATH.write_text(f"{format_version(next_version)}\n", encoding="utf-8")

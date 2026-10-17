@@ -3,11 +3,17 @@ name: build
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - VERSION
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   gui:

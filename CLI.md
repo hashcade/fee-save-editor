@@ -318,9 +318,10 @@ python3 scripts/release.py minor --check
 python3 scripts/release.py minor
 ```
 
-Run focused local checks for the affected changes, commit and push them, then wait
-for the commit's GitHub `build` workflow to succeed. The release script requires
-that successful CI result instead of repeating the full local test suite, updates
-`VERSION`, creates `chore: release vX.Y.Z` and pushes the commit and tag. GitHub
-Actions builds and packages the downloads and generates release notes. Do not
-create tags or upload release files manually.
+Run focused local checks for the affected changes, then commit and push them.
+The release script updates `VERSION`, creates `chore: release vX.Y.Z` and pushes
+the commit and tag without repeating the full local suite. The tag-triggered
+release workflow is the publication gate: all four platforms must pass the full
+GUI/CLI tests and extracted-package checks before a public Release is created.
+It also generates release notes and uploads the downloads. Do not create tags or
+upload release files manually.
