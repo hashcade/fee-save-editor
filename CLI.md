@@ -13,6 +13,22 @@ Use `--json` for structured output. Catalog and relationship commands also
 accept `--language <code>` where shown by `--help`. Supported codes are `en`,
 `zh-Hans`, `zh-Hant`, `ja`, `ko`, `de`, `fr`, `es` and `it`.
 
+## amiibo Collection
+
+```sh
+FeeEditor.Cli amiibo list Manual0 --json --language zh-Hans
+FeeEditor.Cli amiibo unlock Manual0 Manual0-edited --group outfits
+FeeEditor.Cli amiibo unlock Manual0 Manual0-edited --group music
+FeeEditor.Cli amiibo unlock Manual0 Manual0-edited --key G_BGM_Amiibo_03_ST_Play --key G_BGM_Amiibo_14_ST_Play
+FeeEditor.Cli amiibo unlock Manual0 Manual0-edited --all
+```
+
+The collection contains 12 outfits and 12 music tracks. Unlocking sets only the
+explicit reward-ownership keys to integer 1, adding missing keys when necessary.
+Existing unlocked rewards are unchanged. Duplicate or noninteger reward keys are
+rejected. Outfit-read markers, tickets, scanning history, daily limits, timestamps,
+chapters, recruitment and all other variables remain untouched.
+
 ## Main
 
 ```sh

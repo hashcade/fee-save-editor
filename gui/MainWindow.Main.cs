@@ -158,6 +158,7 @@ public partial class MainWindow
 
     private void ShowPage(bool inspector)
     {
+        AmiiboPanel.IsVisible = false;
         AnimalsPanel.IsVisible = false;
         MinigamesPanel.IsVisible = false;
         MainPanel.IsVisible = !inspector;
@@ -169,7 +170,7 @@ public partial class MainWindow
         SupportsPanel.IsVisible = false;
         AchievementsPanel.IsVisible = false;
         InspectorPanel.IsVisible = inspector;
-        MainNavigation.SelectedIndex = inspector ? 8 : 0;
+        MainNavigation.SelectedIndex = inspector ? 9 : 0;
         if (inspector && CanEditVariables && !HasPendingVariable()) RefreshVariables();
         RefreshPageLayout();
     }

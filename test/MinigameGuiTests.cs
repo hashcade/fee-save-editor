@@ -20,12 +20,12 @@ internal static class MinigameGuiTests
         var main = window.FindControl<Grid>("MainPanel")!;
         var cards = MinigameCatalog.Groups.Select(group => Card(window, group.Id)).ToArray();
         var navigation = window.FindControl<TabStrip>("MainNavigation")!;
-        Check(navigation.ItemCount == 9 && navigation.SelectedIndex == 5 && panel.IsVisible && !main.IsVisible,
+        Check(navigation.ItemCount == 10 && navigation.SelectedIndex == 5 && panel.IsVisible && !main.IsVisible,
             "Minigames must have an independent top-level page.");
         navigation.SelectedIndex = 6;
         Check(window.FindControl<Grid>("AchievementsPanel")!.IsVisible && !panel.IsVisible,
             "Achievements must follow Minigames in top-level navigation.");
-        navigation.SelectedIndex = 8;
+        navigation.SelectedIndex = 9;
         Check(window.FindControl<Grid>("InspectorPanel")!.IsVisible
             && !window.FindControl<Grid>("AchievementsPanel")!.IsVisible
             && window.FindControl<Control>("PageTitle") is null,

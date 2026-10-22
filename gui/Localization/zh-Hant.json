@@ -1,4 +1,9 @@
 {
+  "Amiibo": "amiibo",
+  "AmiiboOutfits": "服裝",
+  "AmiiboMusic": "音樂",
+  "AmiiboLocked": "未解鎖",
+  "UnlockSelected": "解鎖所選",
   "Gender": "性別",
   "Male": "男",
   "Female": "女",

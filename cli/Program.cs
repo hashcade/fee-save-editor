@@ -18,6 +18,8 @@ if (args.Length == 0 || args is ["--help"])
         Usage:
           FeeEditor.Cli inspect <save> [--json]
           FeeEditor.Cli copy <save> <new-file>
+          FeeEditor.Cli amiibo list <save> [--json] [--language <code>]
+          FeeEditor.Cli amiibo unlock <save> <new-file> --all|--group outfits|music|--key <key> [--key <key> ...]
           FeeEditor.Cli animals list <save> [--json] [--language <code>]
           FeeEditor.Cli animals set <save> <new-file> --animal <id> --amount <0-99>
           FeeEditor.Cli animals max <save> <new-file> --all|--animal <id>
@@ -120,6 +122,8 @@ try
 {
     switch (args)
     {
+        case ["amiibo", .. var amiiboOptions]:
+            return AmiiboCommand.Run(amiiboOptions);
         case ["animals", .. var animalOptions]:
             return AnimalsCommand.Run(animalOptions);
         case ["tickets", .. var ticketOptions]:

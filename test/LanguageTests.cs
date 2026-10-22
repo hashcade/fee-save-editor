@@ -22,6 +22,7 @@ internal static class LanguageTests
             .Concat(ItemCatalog.Items.Select(row => row.Names))
             .Concat(QuantityItemCatalog.Items.Select(row => row.Names))
             .Concat(AnimalCatalog.Animals.Select(row => row.Names))
+            .Concat(AmiiboRewardCatalog.Rewards.Select(row => row.Names))
             .Concat(EmblemCatalog.Emblems.Select(row => row.Names))
             .Concat(EmblemCatalog.Rings.Select(row => row.Names))
             .Concat(DonationCatalog.Countries.Select(row => (IReadOnlyDictionary<string, string>)row.Names))
@@ -127,7 +128,7 @@ internal static class LanguageTests
     public static void CheckNavigation(MainWindow window)
     {
         var navigation = window.FindControl<TabStrip>("MainNavigation")!;
-        string[] keys = ["Main", "Items", "Roster", "Emblems", "Support", "Minigames", "Achievements", "Animals", "Inspector"];
+        string[] keys = ["Main", "Items", "Roster", "Emblems", "Support", "Minigames", "Achievements", "Animals", "Amiibo", "Inspector"];
         Check(navigation.Items.Cast<TabStripItem>().Select(item => item.Content as string).SequenceEqual(keys.Select(UiLanguage.Get)),
             "Top-level tabs retain text from a previous language.");
     }

@@ -46,7 +46,7 @@ internal static class HeaderLayoutTests
         {
             (window.ShowItems, "ItemPages", "ConvoyPanel"),
             (window.ShowEmblems, "EmblemPages", "EmblemsPanel"),
-            (() => navigation.SelectedIndex = 8, "InspectorPages", "InspectorOverviewPanel")
+            (() => navigation.SelectedIndex = 9, "InspectorPages", "InspectorOverviewPanel")
         })
         {
             foreach (double pageWidth in new[] { 1120d, 860d })

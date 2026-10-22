@@ -1,4 +1,9 @@
 {
+  "Amiibo": "amiibo",
+  "AmiiboOutfits": "Tenues",
+  "AmiiboMusic": "Musique",
+  "AmiiboLocked": "Verrouillé",
+  "UnlockSelected": "Déverrouiller la sélection",
   "Gender": "Genre",
   "Male": "Masculin",
   "Female": "Féminin",

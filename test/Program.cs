@@ -15,6 +15,12 @@ AppBuilder.Configure<App>().UseSkia().WithInterFont()
 var window = new MainWindow();
 window.Show();
 Dispatcher.UIThread.RunJobs();
+if (args is ["--amiibo-tests", var amiiboSave, var amiiboScreenshots])
+{
+    AmiiboTests.Run(window, amiiboSave, amiiboScreenshots);
+    window.Close();
+    return;
+}
 if (args is ["--gender-tests", var genderSave, var genderScreenshot])
 {
     GenderTests.Run(window, genderSave, genderScreenshot);
@@ -140,6 +146,7 @@ try
     MainTests.Run(window, temporary);
     PlayTimeTests.Run(window, temporary);
     ProtagonistNameTests.Run(window, temporary);
+    AmiiboTests.Run(window);
     ActivityConditionTests.Run(window, temporary);
     MinigameTests.Run();
     MinigameGuiTests.Run(window, temporary);

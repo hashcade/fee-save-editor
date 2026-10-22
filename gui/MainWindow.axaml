@@ -71,6 +71,7 @@
           <TabStripItem Content="{DynamicResource Minigames}" />
           <TabStripItem Content="{DynamicResource Achievements}" />
           <TabStripItem Content="{DynamicResource Animals}" />
+          <TabStripItem Content="{DynamicResource Amiibo}" />
           <TabStripItem Content="{DynamicResource Inspector}" />
         </TabStrip>
       </ScrollViewer>
@@ -184,6 +185,36 @@
               <Button Content="{DynamicResource MaxAmount}" HorizontalAlignment="Stretch" Click="MaxTickets_Click" />
             </StackPanel>
           </StackPanel>
+        </suki:GlassCard>
+      </Grid>
+    </ScrollViewer>
+    <ScrollViewer Name="AmiiboScroll" Grid.Row="1" Margin="24,0" IsVisible="{Binding IsVisible, ElementName=AmiiboPanel}" HorizontalScrollBarVisibility="Disabled">
+      <Grid Name="AmiiboPanel" IsVisible="False" ColumnDefinitions="*,*" ColumnSpacing="24" VerticalAlignment="Top">
+        <suki:GlassCard Padding="20">
+          <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <TextBlock Text="{DynamicResource AmiiboOutfits}" FontWeight="SemiBold" />
+              <TextBlock Name="AmiiboOutfitCount" Grid.Column="1" Text="—/12" />
+            </Grid>
+            <StackPanel Name="AmiiboOutfitRows" Grid.Row="1" Spacing="4" />
+            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+              <Button Name="UnlockSelectedAmiiboOutfitsButton" Content="{DynamicResource UnlockSelected}" Tag="Outfits" Click="UnlockSelectedAmiibo_Click" HorizontalAlignment="Stretch" IsEnabled="False" />
+              <Button Name="UnlockAllAmiiboOutfitsButton" Grid.Column="1" Content="{DynamicResource UnlockAll}" Tag="Outfits" Click="UnlockAllAmiibo_Click" HorizontalAlignment="Stretch" IsEnabled="False" />
+            </Grid>
+          </Grid>
+        </suki:GlassCard>
+        <suki:GlassCard Grid.Column="1" Padding="20">
+          <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <TextBlock Text="{DynamicResource AmiiboMusic}" FontWeight="SemiBold" />
+              <TextBlock Name="AmiiboMusicCount" Grid.Column="1" Text="—/12" />
+            </Grid>
+            <StackPanel Name="AmiiboMusicRows" Grid.Row="1" Spacing="4" />
+            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+              <Button Name="UnlockSelectedAmiiboMusicButton" Content="{DynamicResource UnlockSelected}" Tag="Music" Click="UnlockSelectedAmiibo_Click" HorizontalAlignment="Stretch" IsEnabled="False" />
+              <Button Name="UnlockAllAmiiboMusicButton" Grid.Column="1" Content="{DynamicResource UnlockAll}" Tag="Music" Click="UnlockAllAmiibo_Click" HorizontalAlignment="Stretch" IsEnabled="False" />
+            </Grid>
+          </Grid>
         </suki:GlassCard>
       </Grid>
     </ScrollViewer>

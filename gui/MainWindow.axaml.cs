@@ -40,6 +40,7 @@ public partial class MainWindow : Window
         BondFragmentsInput.Maximum = MainLimits.MaxBondFragments;
         IronIngotsInput.Maximum = SteelIngotsInput.Maximum = SilverIngotsInput.Maximum = MainLimits.MaxIngots;
         RefreshOptions();
+        LoadAmiiboRewards();
         RefreshItemChoices();
         RefreshQuantityItemLanguage();
         RefreshPageLayout();
@@ -68,6 +69,7 @@ public partial class MainWindow : Window
             LoadInventory();
             LoadQuantityItems();
             LoadAnimals();
+            LoadAmiiboRewards();
             LoadRoster();
             LoadProtagonistSettings();
             LoadEmblems();
@@ -109,6 +111,7 @@ public partial class MainWindow : Window
         RefreshQuantityItemLanguage();
         RefreshDonationLanguage();
         RefreshAnimals(selectEditor: false);
+        RefreshAmiiboRewards();
         RefreshMinigameLanguage();
         RefreshAchievementLanguage();
         RefreshRosterLanguage();
@@ -132,7 +135,7 @@ public partial class MainWindow : Window
     private void RefreshGameplayValues()
     {
         LoadMainValues(); LoadActivities(); LoadDonations(); LoadMinigames(); LoadAchievements();
-        LoadInventory(); LoadQuantityItems(); LoadAnimals(); LoadRoster(); LoadProtagonistSettings(); LoadEmblems(); LoadSupports();
+        LoadInventory(); LoadQuantityItems(); LoadAnimals(); LoadAmiiboRewards(); LoadRoster(); LoadProtagonistSettings(); LoadEmblems(); LoadSupports();
     }
 
     private void RefreshOverview()
@@ -235,9 +238,10 @@ public partial class MainWindow : Window
     private void Navigation_Changed(object? sender, SelectionChangedEventArgs e)
     {
         if (MainPanel is null || ItemsPanel is null || RosterPanel is null || EmblemsPanel is null
-            || EmblemPagesPanel is null || BondRingsPanel is null || SupportsPanel is null || AchievementsPanel is null || MinigamesPanel is null || InspectorPanel is null || AnimalsPanel is null)
+            || EmblemPagesPanel is null || BondRingsPanel is null || SupportsPanel is null || AchievementsPanel is null || MinigamesPanel is null || InspectorPanel is null || AnimalsPanel is null || AmiiboPanel is null)
             return;
         if (MainNavigation.SelectedIndex != 7) AnimalsPanel.IsVisible = false;
+        if (MainNavigation.SelectedIndex != 8) AmiiboPanel.IsVisible = false;
         switch (MainNavigation.SelectedIndex)
         {
             case 0 when !MainPanel.IsVisible:
@@ -264,7 +268,10 @@ public partial class MainWindow : Window
             case 7 when !AnimalsPanel.IsVisible:
                 ShowAnimals();
                 break;
-            case 8 when !InspectorPanel.IsVisible:
+            case 8 when !AmiiboPanel.IsVisible:
+                ShowAmiibo();
+                break;
+            case 9 when !InspectorPanel.IsVisible:
                 ShowPage(inspector: true);
                 break;
         }
