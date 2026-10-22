@@ -9,12 +9,36 @@ using FeeEditor.Core;
 using FeeEditor.Gui;
 using FeeEditor.Gui.Localization;
 
+if (args is ["--core-tests"])
+{
+    RegressionSuites.RunCore();
+    return;
+}
+if (args is ["--suite-coverage"])
+{
+    RegressionSuites.CheckCoverage();
+    return;
+}
 AppBuilder.Configure<App>().UseSkia().WithInterFont()
     .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseHeadlessDrawing = false })
     .SetupWithoutStarting();
 var window = new MainWindow();
 window.Show();
 Dispatcher.UIThread.RunJobs();
+if (args is ["--platform-smoke"])
+{
+    PlatformSmokeTests.Run(window);
+    window.Close();
+    return;
+}
+if (args is ["--gui-suite", var guiSuite] && guiSuite != "shell")
+{
+    string suiteDirectory = Path.Combine(Path.GetTempPath(), $"fee-gui-suite-{Guid.NewGuid():N}");
+    Directory.CreateDirectory(suiteDirectory);
+    try { RegressionSuites.RunGui(guiSuite, window, suiteDirectory); }
+    finally { window.Close(); Directory.Delete(suiteDirectory, recursive: true); }
+    return;
+}
 if (args is ["--amiibo-tests", var amiiboSave, var amiiboScreenshots])
 {
     AmiiboTests.Run(window, amiiboSave, amiiboScreenshots);
@@ -41,7 +65,7 @@ if (args is ["--main-screenshot", var mainSave, var mainScreenshot])
 }
 Check(UiLanguage.Current == "en", "The default UI language is not English.");
 Check(window.Icon is not null, "The Sommie window icon is missing.");
-if (args is not ["--advanced-tests"]) HeaderLayoutTests.Run(window);
+if (args is not ["--advanced-tests"]) RegressionSuites.Timed(nameof(HeaderLayoutTests), () => HeaderLayoutTests.Run(window));
 Check(window.FindControl<Image>("AppLogo") is null,
     "The menu must not contain a separate avatar, matching the FETH template.");
 Check(window.FindControl<Control>("RosterName") is null
@@ -63,7 +87,7 @@ if (args is ["--about-screenshot", var aboutScreenshot])
     Console.WriteLine($"Screenshot: {Path.GetFullPath(aboutScreenshot)}");
     return;
 }
-AboutTests.Run(window);
+RegressionSuites.Timed(nameof(AboutTests), () => AboutTests.Run(window));
 if (args is ["--review-screenshots", var reviewDirectory, var reviewOutput])
 {
     ReviewScreenshots.Run(window, reviewDirectory, reviewOutput);
@@ -143,42 +167,7 @@ try
     Check(window.Save.Serialize().AsSpan().SequenceEqual(original), "An invalid load replaced the current save.");
     Check(!Directory.EnumerateFiles(temporary, ".fee-*.tmp").Any(), "Temporary save files were left behind.");
 
-    MainTests.Run(window, temporary);
-    PlayTimeTests.Run(window, temporary);
-    ProtagonistNameTests.Run(window, temporary);
-    AmiiboTests.Run(window);
-    ActivityConditionTests.Run(window, temporary);
-    MinigameTests.Run();
-    MinigameGuiTests.Run(window, temporary);
-    DonationTests.Run();
-    AchievementTests.Run();
-    AchievementGuiTests.Run(window, temporary);
-    DonationGuiTests.Run(window, temporary);
-    InventoryTests.Run(window, temporary);
-    QuantityItemTests.Run();
-    AnimalTicketTests.Run(window, []);
-    QuantityItemGuiTests.Run(window, temporary);
-    RosterTests.Run(window, temporary);
-    RosterClassTests.Run(window, temporary);
-    RosterSkillTests.Run(window, temporary);
-    RosterTransferTests.Run(window, temporary);
-    RosterEquipmentTests.Run(window, temporary);
-    RosterRecoveryTests.Run(window, temporary);
-    AdvancedEditingTests.Run(window, temporary);
-    RosterStatTests.Run();
-    RosterStatGuiTests.Run(window, temporary);
-    EmblemTests.Run();
-    BondRingTests.Run();
-    EmblemGuiTests.Run(window, temporary);
-    EmblemCreationTests.Run(window, temporary);
-    BondRingGuiTests.Run(window, temporary);
-    BondRingEffectsTests.Run(window, temporary);
-    EmblemNavigationTests.Run(window, temporary);
-    SupportTests.Run();
-    SupportGuiTests.Run(window, temporary);
-    EngravingTests.Run();
-    EngravingGuiTests.Run(window, temporary);
-    LanguageTests.Run(window, temporary);
+    if (args is not ["--gui-suite", "shell"]) RegressionSuites.RunAll(window, temporary);
 
     if (args is ["--save-directory", var directory, ..])
         foreach (string name in new[] { "Auto", "Manual0", "Global" })
