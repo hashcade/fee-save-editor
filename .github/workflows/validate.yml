@@ -1,0 +1,49 @@
+name: complete-validation
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  logic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Build test runner and CLI
+        run: dotnet build test/Gui.Smoke.csproj -c Release --nologo
+      - name: Verify regression group coverage
+        run: dotnet test/bin/Release/net10.0/FeeEditor.Test.dll --suite-coverage
+      - name: Verify CI and release guards
+        run: |
+          python scripts/test_ci.py
+          python scripts/test_release_script.py
+      - name: Verify core logic without initializing the GUI
+        run: dotnet test/bin/Release/net10.0/FeeEditor.Test.dll --core-tests
+      - name: Complete CLI regression
+        run: python scripts/test_cli.py --cli cli/bin/Release/net10.0/FeeEditor.Cli
+
+  gui:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [shell, main, somniel, items, roster, emblems, languages]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Build GUI test runner
+        run: dotnet build test/Gui.Smoke.csproj -c Release --nologo
+      - name: Complete GUI regression group
+        run: dotnet test/bin/Release/net10.0/FeeEditor.Test.dll --gui-suite ${{ matrix.suite }}

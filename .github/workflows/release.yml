@@ -13,71 +13,47 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
-  package:
+  reuse:
     if: github.event_name == 'push'
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-2025
-            rid: win-x64
-            cli: FeeEditor.Cli.exe
-          - os: macos-15
-            rid: osx-arm64
-            cli: FeeEditor.Cli
-          - os: macos-15-intel
-            rid: osx-x64
-            cli: FeeEditor.Cli
-          - os: ubuntu-24.04
-            rid: linux-x64
-            cli: FeeEditor.Cli
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    outputs:
+      reuse: ${{ steps.validation.outputs.reuse }}
     steps:
       - uses: actions/checkout@v7
-
-      - uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
-
+          fetch-depth: 2
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+      - name: Reuse only successful validation of identical code
+        id: validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/resolve_validation.py --wait-seconds 1200
 
-      - name: Verify tag version
-        shell: pwsh
-        run: |
-          $version = (Get-Content VERSION -Raw).Trim()
-          if ($env:GITHUB_REF_NAME -ne "v$version") { throw "Tag does not match VERSION" }
+  validation:
+    if: github.event_name == 'push' && needs.reuse.outputs.reuse != 'true'
+    needs: reuse
+    uses: ./.github/workflows/validate.yml
 
-      - name: Build and test
-        run: dotnet build FeeEditor.slnx -c Release --nologo
-
-      - name: Verify CLI save editing
-        run: python scripts/test_cli.py --cli cli/bin/Release/net10.0/${{ matrix.cli }}
-
-      - name: Verify GUI rendering
-        run: dotnet run --project test/Gui.Smoke.csproj -c Release --no-build
-
-      - name: Publish GUI and CLI with a shared trimmed runtime
-        run: dotnet publish gui/FeeEditor.Gui.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=false -o dist/gui/${{ matrix.rid }}
-
-      - name: Package platform download
-        run: python scripts/package_release.py ${{ matrix.rid }}
-
-      - name: Test extracted release ZIP
-        run: python scripts/test_release_package.py ${{ matrix.rid }}
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: fee-release-${{ matrix.rid }}
-          path: dist/fee-save-editor-v*-${{ matrix.rid }}.zip
-          if-no-files-found: error
+  package:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/platforms.yml
+    with:
+      artifact-prefix: fee-release
+      verify-tag: true
 
   publish:
-    if: github.event_name == 'push'
-    needs: package
+    if: >-
+      always() && github.event_name == 'push' && needs.package.result == 'success'
+      && needs.reuse.result == 'success'
+      && ((needs.reuse.outputs.reuse == 'true' && needs.validation.result == 'skipped')
+      || (needs.reuse.outputs.reuse != 'true' && needs.validation.result == 'success'))
+    needs: [reuse, validation, package]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
